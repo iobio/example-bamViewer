@@ -38,7 +38,7 @@ Add input buttons for user to select a region and data (either via a file or an 
 ```
 
 ### Hook up modal
-Use bootstrap to create a modal for the URL button. 
+Use bootstrap to create a modal for the URL button.
 
 ```html
   <!-- in container div -->
@@ -54,3 +54,7 @@ Use bootstrap to create a modal for the URL button.
     	</div>
   	</div>
 ```
+
+### Results
+We should now see something like this
+![alt text](https://raw.githubusercontent.com/iobio/example-app/master/assets/img/step1.png)

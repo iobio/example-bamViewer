@@ -24,7 +24,7 @@ Inside the body tag but at the very end add a script tag. All of your JavaScript
 
 ```html
 <script>
-  
+
 </script>
 ```
 
@@ -91,3 +91,7 @@ function goFile(evt) {
     });
 }
 ```
+
+### Results
+We should now see something like this
+![alt text](https://raw.githubusercontent.com/iobio/example-app/master/assets/img/step2.png)
