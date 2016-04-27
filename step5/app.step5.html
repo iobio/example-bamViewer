@@ -171,7 +171,7 @@
 
 					// Use MD Tag to get Mismatch and Delete information
 					if (d.data.md) {
-						// Split on Numbers
+						// Split on numbers to get each span
 						d.data.md.split('MD:Z:')[1].split(/([0-9]+)/).forEach(function(c) {
 							if (c == '' ) { return } // Ignore empties
 							else if(isNaN(c)){ // Handle non numbers
@@ -183,7 +183,7 @@
 									stopColor = 'red';
 								}
 
-							} else { // handle numbers
+							} else { // Match - Handle numbers
 								var percent = pos + parseInt(c) / seqLength * 100;
 								stopColor = '#b4b4b4';
 							}

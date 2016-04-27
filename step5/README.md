@@ -2,7 +2,7 @@
 So we have our basic viewer up and working. We can have a little fun and alter the chart to do some more use-case specific stuff.
 
 ### Add arrows to show strandedness
-Showing strandedness is built in so we can just add an extra attribute to our chart to get it to work. Around line 162 we can add the direction attribute and give some information on how to determine if an alignment is forward or reverse. I've included the whole chart below, but you only have to add the last line
+Showing strandedness is built in to the alignment chart, so we can just add an extra attribute to our chart to get it to work. At [line 162](https://github.com/iobio/example-app/blob/master/step4/app.step4.html#L162) we can add the direction attribute and give some information on how to determine if an alignment is forward or reverse. I've included the whole chart below, but you only have to add the last line
 ```JavaScript
 var chart = iobio.viz.alignment()
 	.width(width)
@@ -47,7 +47,7 @@ Finally, lets see if we can show some finer sequence information. We could add a
 	var seqLength = d.data.seqStr.length,
 		pos = 0,
 		stopColor;
-		
+
 	// Create linear gradient
 	var linearGradient = d3.select('#viz svg').append('linearGradient').attr('id', 'gradient-' + i);
 

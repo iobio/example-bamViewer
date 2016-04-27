@@ -51,7 +51,7 @@ function unpackFlag(flagValue) {
 ```
 
 ### Hook up URL data to visualization
-Around line 89 replace the ```data``` event callback with this code
+At [line 89](https://github.com/iobio/example-app/blob/master/step3/app.step3.html#L85) replace the ```data``` event callback with this code
 ```JavaScript
 // Do stuff with results
 var partialRecord = '';
@@ -67,7 +67,7 @@ cmd.on('data', function(msg) {
 ```
 
 ### Hook up FILE data to visualization
-Add this around line 127 and remove the console.log(alnseq). If you don't plan on testing file data, you can skip this bit
+At [line 115](https://github.com/iobio/example-app/blob/master/step3/app.step3.html#L115) replace ```console.log(alnseq)```  If you don't plan on testing file data, you can skip this bit
 ```JavaScript
 // Add a few fields to match the alignments coming from the URL
 alns = alnseq.map(function(d) {
