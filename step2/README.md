@@ -10,7 +10,7 @@ Inside he container div at the end add a spinner
 <img id='spinner' src="../assets/img/spinner.gif"></img>
 ```
 
-In the style tag around line 20, add some style to the spinner
+In the style tag at [line 19](https://github.com/iobio/example-app/blob/master/step1/app.step1.html#L19), add some style to the spinner
 ```html
 <style type="text/css">
 	.container { margin-top: 100px; }
