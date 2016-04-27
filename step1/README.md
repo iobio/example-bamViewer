@@ -56,5 +56,7 @@ Use bootstrap to create a modal for the URL button.
 ```
 
 ### Results
-We should now see something like this
+[Step1 Live](http://iobio.github.io/example-bamViewer/step1/app.step1.html)
+
+Screenshot
 ![alt text](https://raw.githubusercontent.com/iobio/example-bamViewer/master/assets/img/step1.png)

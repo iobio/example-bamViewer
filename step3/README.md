@@ -54,5 +54,7 @@ Also a few things to note:
 * The pileup returns data in the format of ```{ x:xpos, y:ypos, data:{} )``` where the original data is now stored in data. This is done so that nothing in your original data is overwritten. This is why the id accessor function grabs the id by doing ```d.data.id```
 
 ### Results
-We should now see something like this
+[Step3 Live](http://iobio.github.io/example-bamViewer/step3/app.step3.html)
+
+Screenshot
 ![alt text](https://raw.githubusercontent.com/iobio/example-bamViewer/master/assets/img/step3.png)

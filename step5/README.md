@@ -88,5 +88,7 @@ Finally, lets see if we can show some finer sequence information. We could add a
 ```
 
 ### Results
-We should now see something like this
+[Step5 Live](http://iobio.github.io/example-bamViewer/step5/app.step5.html)
+
+Screenshot
 ![alt text](https://raw.githubusercontent.com/iobio/example-bamViewer/master/assets/img/step5.png)

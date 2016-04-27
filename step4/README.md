@@ -83,5 +83,7 @@ draw(alns);
 ```
 
 ### Results
-We should now see something like this
+[Step4 Live](http://iobio.github.io/example-bamViewer/step4/app.step4.html)
+
+Screenshot
 ![alt text](https://raw.githubusercontent.com/iobio/example-bamViewer/master/assets/img/step4.png)

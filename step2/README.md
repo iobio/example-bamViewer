@@ -93,5 +93,7 @@ function goFile(evt) {
 ```
 
 ### Results
-We should now see something like this
+[Step2 Live](http://iobio.github.io/example-bamViewer/step2/app.step2.html)
+
+Screenshot
 ![alt text](https://raw.githubusercontent.com/iobio/example-bamViewer/master/assets/img/step2.png)
