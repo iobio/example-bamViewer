@@ -84,3 +84,4 @@ draw(alns);
 
 ### Results
 We should now see something like this
+![alt text](https://raw.githubusercontent.com/iobio/example-app/master/assets/img/step4.png)
