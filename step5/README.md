@@ -1,8 +1,92 @@
-# Step 1
+# Step 5
+So we have our basic viewer up and working. We can have a little fun and alter the chart to do some more use-case specific stuff.
 
-To start clone this repo and go to the step1 directory
+### Add arrows to show strandedness
+Showing strandedness is built in so we can just add an extra attribute to our chart to get it to work. Around line 162 we can add the direction attribute and give some information on how to determine if an alignment is forward or reverse. I've included the whole chart below, but you only have to add the last line
+```JavaScript
+var chart = iobio.viz.alignment()
+	.width(width)
+	.height(height)
+	.margin(margin)
+	.yAxis(null)
+	.xValue(function(d) { return d.x; })
+	.yValue(function(d) { return d.y; })
+	.wValue(function(d) { return d.w; })
+	.id(function(d) { return 'read-' + d.data.id.replace('.', '_'); })
+	.tooltip(function(d) { return "id:  " + d.data.id + "<br/>" + "pos: " + d.data.start + ' - ' + (d.data.end) + "<br/>"  + "seq: " +       d.data.seqStr
+		+ "<br/> cigar: " + d.data.cigarStr;
+	})
+	.directionValue(function(d) { return d.data.flag.read_reverse_strand ? 'reverse' : 'forward' ; }) // ADD THIS HERE
+```
 
+### Show mate pair
+Lets say we want to emphasize mate pairs in this visualization. Here we can add some custom d3 code that is not part of the chart to get a magnifying effect. Add this right below where you call the chart, around line 213
+```JavaScript
+// Add mate pair expand on hover
+selection.selectAll('.alignment polygon') // select all alignments, which are polygons
+	.on('mouseover', function(d) {
+        d3.selectAll('#' + this.getAttribute('id'))
+        	.attr('transform', 'scale(3,3)') // magnify
+        	.each(function(){ // forces hovered alignment to front
+				this.parentNode.parentNode.appendChild(this.parentNode);
+		    });
+    })
+    .on('mouseout', function(d) {
+        d3.selectAll('#' + this.getAttribute('id')).attr('transform', 'scale(1,1)'); // demagnify
+    })
+    .style('stroke', 'white') // add a white border to make it easier to see
+    .style('stroke-width', '1px')
 ```
-  git clone https://github.com/iobio/example-app.git
-  cd example-app/step1
+
+### Show mismatches and deletions
+Finally, lets see if we can show some finer sequence information. We could add an element for each nucleotide, but that would increase our number of DOM objects by around 100X for the default URL BAM sample and even more for other samples. So instead we can be a little clever with color gradients to get the same effect. Here we'll use a color gradient to show mismatches as red and deletions as black. So we'll use the .color chart helper attribute to set the fill color for the alignment polygons. I've only included the last line of the chart for context. So add this new color attribute right below the directionValue attribute we added above.
+```JavaScript
+// snipped off rest of the chart definition above
+.directionValue(function(d) { return d.data.flag.read_reverse_strand ? 'reverse' : 'forward' ; }) // previously added
+.color(function(d,i) { // Add from here down
+	var seqLength = d.data.seqStr.length,
+		pos = 0,
+		stopColor;
+		
+	// Create linear gradient
+	var linearGradient = d3.select('#viz svg').append('linearGradient').attr('id', 'gradient-' + i);
+
+    // Use MD Tag to get Mismatch and Delete information
+	if (d.data.md) {
+	    // Split on numbers to get each span
+		d.data.md.split('MD:Z:')[1].split(/([0-9]+)/).forEach(function(c) {
+			if (c == '' ) { return } // Ignore empties
+			else if(isNaN(c)){ // Handle non numbers
+				if (c[0] == '^') { // Deletion
+					percent = pos + (c.length-1) / seqLength * 100;
+					stopColor = 'black';
+				} else { // Mismatch
+					percent = pos + (c.length) / seqLength * 100;
+					stopColor = 'red';
+				}
+
+			} else { // Match - Handle numbers
+				var percent = pos + parseInt(c) / seqLength * 100;
+				stopColor = '#b4b4b4';
+			}
+			linearGradient.append('stop')
+					.attr('offset', pos + '%')
+					.attr('stop-color', stopColor);
+
+			linearGradient.append('stop')
+				.attr('offset', percent + '%')
+				.attr('stop-color', stopColor);
+
+			pos = percent;
+		})
+		return 'url(#' + 'gradient-' + i;
+	} else {
+
+		return 'rgb(180,180,180)';
+	}
+});
 ```
+
+### Results
+We should now see something like this
+![alt text](https://raw.githubusercontent.com/iobio/example-app/master/assets/img/step5.png)
