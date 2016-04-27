@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<!-- include iobio libs -->
+	<script type="text/javascript" src="../assets/js/js-local-bam.min.js"></script>
+	<script type="text/javascript" src="../assets/js/iobio.min.js"></script>
+	<script type="text/javascript" src="../assets/js/iobio.viz.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../assets/css/iobio.viz.min.css">
+
+	<!-- include 3rd party libs -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" charset="utf-8"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src='http://underscorejs.org/underscore-min.js'></script>
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+	<style type="text/css">
+		.container { margin-top: 100px; }
+
+		#spinner { display: none; margin-top: 60px; }
+	</style>
+</head>
+
+<body>
+
+	<div class='container text-center'>
+		<!-- Title -->
+		<h1>BAM Viewer</h1>
+
+		<!-- Inputs -->
+		<div  id="input">
+			<!-- Region input -->
+			<div>Region: <input id='region' type='text' value="20:4000000-4001000" ></input></div>
+
+			<!-- URL input -->
+			<button class='btn btn-info' type="button" data-toggle="modal" data-target="#urlModal">Open Url</button>
+
+			<!-- File input -->
+			<label class="btn btn-info" for="my-file-selector">
+			    <input id="my-file-selector" onchange="goFile(this)" type="file" style="display:none;" multiple>
+			    Open File
+			</label>
+		</div>
+
+		<!-- spinner -->
+		<img id='spinner' src="../assets/img/spinner.gif"></img>
+
+		<!-- Visualization -->
+		<div id='viz' style="width:100%"></div>
+
+	</div>
+
+
+	<!-- URL modal -->
+	<div class="modal fade" id="urlModal" tabindex="-1" role="dialog" aria-labelledby="urlModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <h3>Enter Url</h3>
+                <input id='url' type='text' value="http://s3.amazonaws.com/iobio/NA12878/NA12878.autsome.bam"></input>
+                <button onclick='goUrl()' type="button" data-dismiss="modal" class="btn btn-primary">Go</button>
+            </div>
+    	</div>
+  	</div>
+
+
+  	<script type="text/javascript">
+  		// Defaults
+  		var webservice = 'services.iobio.io/samtools',
+  			margin = {top: 30, left: 30, right: 30, bottom: 30},
+  			width = 800,
+  			height = 500;
+
+  		function goUrl() {
+  			// Get inputs
+  			var url = $('#url').val();
+  			var region = $('#region').val() ;
+
+  			// Show spinner
+  			$('#spinner').css('display', 'inline');
+
+  			// Store alns as they come back
+  			var alns = [];
+
+  			// Create iobio command
+  			var cmd = new iobio.cmd(webservice, [ 'view', url, region ])
+
+  			// Do stuff with results
+  			var partialRecord = '';
+  			var prevStr;
+  			cmd.on('data', function(msg) {
+  				var recs = (partialRecord + msg).split("\n");
+  				// Keep track of records that have been cut off at the end of the message
+				partialRecord = recs[recs.length-1].slice(-1) == "\n" ? '' : recs.pop()
+  				recs.forEach(function(recStr) {
+  					alns.push( parseSamRecord(recStr) );
+  				})
+  				draw( alns );
+  			})
+
+  			// Error handling
+  			cmd.on('error', function(err) { console.log('Error: ' + err);})
+
+  			// Run command
+  			cmd.run();
+  		}
+
+  		function goFile(evt) {
+  			// Figure out which is BAM and which is BAI
+			var bam = evt.files[0].name.slice(-3) == 'bam' ? evt.files[0] : evt.files[1];
+  			var bai = evt.files[0].name.slice(-3) == 'bai' ? evt.files[0] : evt.files[1];
+
+  			// Parse Region
+  			var region = $('#region').val();
+  			var chr = region.split(':')[0];
+  			var start = +region.split(':')[1].split('-')[0];
+  			var end = +region.split(':')[1].split('-')[1];
+  			var alns;
+
+  			// Show spinner
+  			$('#spinner').css('display', 'inline');
+
+  			// Get alignments from BAM file
+  			var bamR = new readBinaryBAM(bai, bam);
+		  	bamR.bamFront(function(){
+		  		bamR.getAlns(chr, start, end, function(alnseq){
+		  			// Add a few fields to match the alignments coming from the URL
+		  			alns = alnseq.map(function(d) {
+			  				d.head.id = d.head.read_name;
+			  				var md = d.aux_data.filter(function(t) { return t.tag == 'MD'; })[0];
+			  				if (md) d.head.md = 'MD:Z:' + md.value
+			  				d.head.flag = unpackFlag(d.head.flag);
+			  				d.head.start = d.head.pos;
+			  				d.head.end = d.head.start + d.head.l_seq;
+			  				return d.head;
+			  			})
+		  			draw(alns);
+		  		})
+		  	});
+  		}
+
+  		// Draw Alignment Visualization
+  		function draw(alns) {
+
+  			// Hide spinner
+			$('#spinner').css('display', 'none');
+
+			// Create pileup layout to calculate position
+			var pileup = iobio.viz.layout.pileup().sort(null).size(width);
+
+				// Create alignment chart with attributes
+		    var chart = iobio.viz.alignment()
+				.width(width)
+				.height(height)
+				.margin(margin)
+				.yAxis(null)
+				.xValue(function(d) { return d.x; })
+				.yValue(function(d) { return d.y; })
+				.wValue(function(d) { return d.w; })
+				.id(function(d) { return 'read-' + d.data.id.replace('.', '_'); })
+				.tooltip(function(d) { return "id:  " + d.data.id + "<br/>" + "pos: " + d.data.start + ' - ' + (d.data.end) + "<br/>"  + "seq: " + d.data.seqStr
+					+ "<br/> cigar: " + d.data.cigarStr;
+				})
+				.directionValue(function(d) { return d.data.flag.read_reverse_strand ? 'reverse' : 'forward' ; })
+				.color(function(d,i) {
+					// if (d.data.cigarStr.includes('X'))
+					// 	return 'blue';
+					// else if (d.data.cigarStr.includes('D'))
+					// 	return 'red';
+					// else
+					// 	return 'rgb(180,180,180)'; // #b4b4b4
+					var seqLength = d.data.seqStr.length,
+						linearGradient = 'linear-gradient(to right',
+						pos = 0,
+						stopColor;
+
+					if (d.data.id == "ERR194147.681909242") {
+						var h = 5;
+					}
+					var linearGradient = d3.select('#viz svg').append('linearGradient').attr('id', 'gradient-' + i);
+
+					if (d.data.md) {
+						d.data.md.split('MD:Z:')[1].split(/([0-9]+)/).forEach(function(c) {
+							if (c == '' ) { return } // Ignore empty and Tags
+							else if(isNaN(c)){ // Handle non numbers
+								if (c[0] == '^') { // Deletion
+									percent = pos + (c.length-1) / seqLength * 100;
+									stopColor = 'black';
+								} else { // Mismatch
+									percent = pos + (c.length) / seqLength * 100;
+									stopColor = 'red';
+								}
+
+							} else { // handle numbers
+								var percent = pos + parseInt(c) / seqLength * 100;
+								stopColor = '#b4b4b4';
+							}
+							linearGradient.append('stop')
+									.attr('offset', pos + '%')
+									.attr('stop-color', stopColor);
+
+							linearGradient.append('stop')
+								.attr('offset', percent + '%')
+								.attr('stop-color', stopColor);
+
+							pos = percent;
+						})
+						return 'url(#' + 'gradient-' + i;
+					} else {
+
+						return 'rgb(180,180,180)';
+					}
+				});
+
+			// Create selection with viz div and the alignment data
+		    var selection = d3.select('#viz').datum( pileup(alns) );
+
+		    // Draw chart
+		    chart(selection);
+
+		    d3.selection.prototype.moveToFront = function() {
+		      return this.each(function(){
+		        this.parentNode.parentNode.appendChild(this.parentNode);
+		      });
+		    };
+
+		    // Add mate pair expand on hover
+		    selection.selectAll('.alignment polygon')
+		    	.on('mouseover', function(d) {
+			        d3.selectAll('#' + this.getAttribute('id'))
+			        	.attr('transform', 'scale(3,3)')
+			        	.each(function(){ // forces hovered alignment to front
+							this.parentNode.parentNode.appendChild(this.parentNode);
+					    });
+			    })
+			    .on('mouseout', function(d) {
+			        d3.selectAll('#' + this.getAttribute('id')).attr('transform', 'scale(1,1)');
+			    })
+			    .style('stroke', 'white')
+			    .style('stroke-width', '1px')
+
+		}
+
+		function parseSamRecord(str) {
+	        var rec = {},
+	            fields = str.split("\t")
+
+	        rec.id = fields[0];
+	        rec.flag = unpackFlag(+fields[1]);
+	        rec.rname = fields[2];
+	        rec.start = +fields[3];
+	        rec.cigarStr = fields[5];
+	        rec.seqStr = fields[9];
+	        rec.end = rec.start + rec.seqStr.length;
+	        rec.md = fields.slice(11).filter(function(d) { return d.slice(0,2) == 'MD' })[0];
+
+	        return rec;
+	    }
+
+	    function unpackFlag(flagValue) {
+	        var flag = {};
+
+	        lstFlags = [
+	            ["read_paired", 0x1],
+	            ["read_mapped_in_proper_pair", 0x2],
+	            ["read_unmapped", 0x4],
+	            ["mate_unmapped", 0x8],
+	            ["read_reverse_strand", 0x10],
+	            ["mate_reverse_strand", 0x20],
+	            ["first_in_pair", 0x40],
+	            ["second_in_pair", 0x80],
+	            ["not_primary_alignment", 0x100],
+	            ["read_fails_quality_checks", 0x200],
+	            ["read_is_PCR_or_optical_duplicate", 0x400],
+	            ["supplementary_alignment", 0x800]
+	        ];
+
+	        for(var i = 0; i < lstFlags.length; i++) {
+
+	            if(lstFlags[i][1] & flagValue) {
+	                flag[ lstFlags[i][0] ] = true;
+	            } else {
+	                flag[ lstFlags[i][0] ] = false;
+	            }
+	        }
+	        return flag;
+	    }
+
+  	</script>
+
+
+</div>
+
+</body>
+</html>

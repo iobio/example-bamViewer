@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- include iobio libs -->
+	<script type="text/javascript" src="../assets/js/js-local-bam.min.js"></script>
+	<script type="text/javascript" src="../assets/js/iobio.min.js"></script>
+	<script type="text/javascript" src="../assets/js/iobio.viz.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../assets/css/iobio.viz.min.css">
+
+	<!-- include 3rd party libs -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" charset="utf-8"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src='http://underscorejs.org/underscore-min.js'></script>
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+	<style type="text/css">
+		.container { margin-top: 100px; }
+
+		#spinner { display: none; margin-top: 60px; }
+	</style>
+</head>
+
+<body>
+
+	<div class='container text-center'>
+		<!-- Title -->
+		<h1>BAM Viewer</h1>
+
+		<!-- Inputs -->
+		<div  id="input">
+			<!-- Region input -->
+			<div>Region: <input id='region' type='text' value="20:4000000-4001000" ></input></div>
+
+			<!-- URL input -->
+			<button class='btn btn-info' type="button" data-toggle="modal" data-target="#urlModal">Open Url</button>
+
+			<!-- File input -->
+			<label class="btn btn-info" for="my-file-selector">
+			    <input id="my-file-selector" onchange="goFile(this)" type="file" style="display:none;" multiple>
+			    Open File
+			</label>
+		</div>
+
+		<!-- spinner -->
+		<img id='spinner' src="../assets/img/spinner.gif"></img>
+
+		<!-- Visualization -->
+		<div id='viz' style="width:100%"></div>
+
+	</div>
+
+
+	<!-- URL modal -->
+	<div class="modal fade" id="urlModal" tabindex="-1" role="dialog" aria-labelledby="urlModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <h3>Enter Url</h3>
+                <input id='url' type='text' value="http://s3.amazonaws.com/iobio/NA12878/NA12878.autsome.bam"></input>
+                <button onclick='goUrl()' type="button" data-dismiss="modal" class="btn btn-primary">Go</button>
+            </div>
+    	</div>
+  	</div>
+
+
+  	<script type="text/javascript">
+  		// Defaults
+  		var webservice = 'services.iobio.io/samtools',
+  			margin = {top: 30, left: 30, right: 30, bottom: 30},
+  			width = 800,
+  			height = 500;
+
+  		function goUrl() {
+  			// Get inputs
+  			var url = $('#url').val();
+  			var region = $('#region').val() ;
+
+  			// Show spinner
+  			$('#spinner').css('display', 'inline');
+
+  			// Create iobio command
+  			var cmd = new iobio.cmd(webservice, [ 'view', url, region ])
+
+  			// Do stuff with results
+  			cmd.on('data', function(data) {
+  				console.log(data);
+  			})
+
+  			// Error handling
+  			cmd.on('error', function(err) { console.log('Error: ' + err);})
+
+  			// Run command
+  			cmd.run();
+  		}
+
+  		function goFile(evt) {
+  			// Figure out which is BAM and which is BAI
+			var bam = evt.files[0].name.slice(-3) == 'bam' ? evt.files[0] : evt.files[1];
+  			var bai = evt.files[0].name.slice(-3) == 'bai' ? evt.files[0] : evt.files[1];
+
+  			// Parse Region
+  			var region = $('#region').val();
+  			var chr = region.split(':')[0];
+  			var start = +region.split(':')[1].split('-')[0];
+  			var end = +region.split(':')[1].split('-')[1];
+  			var alns;
+
+  			// Show spinner
+  			$('#spinner').css('display', 'inline');
+
+  			// Get alignments from BAM file
+  			var bamR = new readBinaryBAM(bai, bam);
+		  	bamR.bamFront(function(){
+		  		bamR.getAlns(chr, start, end, function(alnseq){
+		  			// getAlns just gets chunks of the bam
+		  			// So it requires an extra filter step to get a precise region
+		  			alns = alnseq.filter(function(d) {
+		  				return ( (d.head.pos >= start) && ((d.head.pos + d.head.seq.length) <= end) );
+		  			})
+		  			console.log(alns);
+		  		})
+		  	});
+  		}
+
+  		// Draw Alignment Visualization
+
+		// Temporary data for testing
+		alns = [{start:1, end:3, id:'1'}, {start:2, end:4, id:'2'}, {start:3, end:5, id:'3'},{start:4, end:6, id:'4'}];
+
+		// Hide spinner
+		$('#spinner').css('display', 'none');
+
+		// Create pileup layout to calculate position
+		var pileup = iobio.viz.layout.pileup().sort(null).size(width);
+
+			// Create alignment chart with attributes
+	    var chart = iobio.viz.alignment()
+			.width(width)
+			.height(height)
+			.margin(margin)
+			.yAxis(null)
+			.xValue(function(d) { return d.x; })
+			.yValue(function(d) { return d.y; })
+			.wValue(function(d) { return d.w; })
+			.id(function(d) { return 'read-' + d.data.id.replace('.', '_'); })
+			.tooltip(function(d) { return "id:  " + d.data.id + "<br/>" + "pos: " + d.data.start + ' - ' + d.data.end + "<br/>"
+			});
+
+		// Create selection with viz div and the alignment data
+	    var selection = d3.select('#viz').datum( pileup(alns) );
+
+	    // Draw chart
+	    chart(selection);
+
+  	</script>
+
+
+</div>
+
+</body>
+</html>
