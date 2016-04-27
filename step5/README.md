@@ -20,7 +20,7 @@ var chart = iobio.viz.alignment()
 ```
 
 ### Show mate pair
-Lets say we want to emphasize mate pairs in this visualization. Here we can add some custom d3 code that is not part of the chart to get a magnifying effect. Add this right below where you call the chart, around line 213
+Lets say we want to emphasize mate pairs in this visualization. Here we can add some custom d3 code that is not part of the chart to get a magnifying effect. Add this right below where you call the chart, below [line 168](https://github.com/iobio/example-app/blob/master/step4/app.step4.html#L168)
 ```JavaScript
 // Add mate pair expand on hover
 selection.selectAll('.alignment polygon') // select all alignments, which are polygons
