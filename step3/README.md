@@ -46,5 +46,5 @@ chart(selection);
 ```
 
 A few things to note:
-* The pileup layout here does the heavy lifting for determining an efficient pileup. After the alignments are run throught the pileup layout each alignmetn has an x and y coordinate. This keeps the chart simple and allows it to simply place each alignment based on these coordinates.
-* The pileup returns data in the format of ```{ x:xpos, y:ypos, data:{} )``` where the original data is now stored in data. This is done so that nothing in your original data is overwritten. This is what the id accessor function grabs the id by doing ```d.data.id```
+* The pileup layout here does the heavy lifting for determining an efficient pileup. After the alignments are run through the pileup layout each alignment has an x and y coordinate. This keeps the chart simple and allows it to simply place each alignment based on these coordinates.
+* The pileup returns data in the format of ```{ x:xpos, y:ypos, data:{} )``` where the original data is now stored in data. This is done so that nothing in your original data is overwritten. This is why the id accessor function grabs the id by doing ```d.data.id```
