@@ -51,18 +51,18 @@
 
 	</div>
 
-
 	<!-- URL modal -->
 	<div class="modal fade" id="urlModal" tabindex="-1" role="dialog" aria-labelledby="urlModal" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body text-center">
-                <h3>Enter Url</h3>
-                <input id='url' type='text' value="http://s3.amazonaws.com/iobio/NA12878/NA12878.autsome.bam"></input>
-                <button onclick='goUrl()' type="button" data-dismiss="modal" class="btn btn-primary">Go</button>
-            </div>
-    	</div>
-  	</div>
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-body text-center">
+	                <h3>Enter Url</h3>
+	                <input id='url' type='text' value="http://s3.amazonaws.com/iobio/NA12878/NA12878.autsome.bam"></input>
+	                <button onclick='goUrl()' type="button" data-dismiss="modal" class="btn btn-primary">Go</button>
+	            </div>
+	    	</div>
+	  	</div>
+	</div>
 
 
   	<script type="text/javascript">
@@ -88,7 +88,6 @@
 
   			// Do stuff with results
   			var partialRecord = '';
-  			var prevStr;
   			cmd.on('data', function(msg) {
   				var recs = (partialRecord + msg).split("\n");
   				// Keep track of records that have been cut off at the end of the message
@@ -215,9 +214,6 @@
 	    }
 
   	</script>
-
-
-</div>
 
 </body>
 </html>
