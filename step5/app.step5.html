@@ -147,7 +147,7 @@
 			// Create pileup layout to calculate position
 			var pileup = iobio.viz.layout.pileup().sort(null).size(width);
 
-				// Create alignment chart with attributes
+			// Create alignment chart with attributes
 		    var chart = iobio.viz.alignment()
 				.width(width)
 				.height(height)
@@ -162,25 +162,18 @@
 				})
 				.directionValue(function(d) { return d.data.flag.read_reverse_strand ? 'reverse' : 'forward' ; })
 				.color(function(d,i) {
-					// if (d.data.cigarStr.includes('X'))
-					// 	return 'blue';
-					// else if (d.data.cigarStr.includes('D'))
-					// 	return 'red';
-					// else
-					// 	return 'rgb(180,180,180)'; // #b4b4b4
 					var seqLength = d.data.seqStr.length,
-						linearGradient = 'linear-gradient(to right',
 						pos = 0,
 						stopColor;
 
-					if (d.data.id == "ERR194147.681909242") {
-						var h = 5;
-					}
+					// Create linear gradient
 					var linearGradient = d3.select('#viz svg').append('linearGradient').attr('id', 'gradient-' + i);
 
+					// Use MD Tag to get Mismatch and Delete information
 					if (d.data.md) {
+						// Split on Numbers
 						d.data.md.split('MD:Z:')[1].split(/([0-9]+)/).forEach(function(c) {
-							if (c == '' ) { return } // Ignore empty and Tags
+							if (c == '' ) { return } // Ignore empties
 							else if(isNaN(c)){ // Handle non numbers
 								if (c[0] == '^') { // Deletion
 									percent = pos + (c.length-1) / seqLength * 100;
@@ -216,12 +209,6 @@
 
 		    // Draw chart
 		    chart(selection);
-
-		    d3.selection.prototype.moveToFront = function() {
-		      return this.each(function(){
-		        this.parentNode.parentNode.appendChild(this.parentNode);
-		      });
-		    };
 
 		    // Add mate pair expand on hover
 		    selection.selectAll('.alignment polygon')
