@@ -1,8 +1,26 @@
 # Step 2
 In this step we'll create the iobio commands to grab the data, but we won't do anthing with the data yet.
 
+### Add spinner
+Add a spinner so that we can see when the app is working
+
+Inside he container div at the end add a spinner
+```html
+<!-- spinner -->
+<img id='spinner' src="../assets/img/spinner.gif"></img>
+```
+
+In the style tag around line 20, add some style to the spinner
+```html
+<style type="text/css">
+	.container { margin-top: 100px; }
+
+    #spinner { display: none; margin-top: 60px; }
+</style>
+```
+
 ### Create script element
-At the end of container div add a script tag. All of your JavaScript will go in here
+Inside the body tag but at the very end add a script tag. All of your JavaScript will go in here.
 
 ```html
 <script>
