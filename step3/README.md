@@ -2,7 +2,7 @@
 In this step we'll create the visualization for our BAM viewer and visualize some test data
 
 ### Define dimensions of visualization
-Add some dimension variables at the beginning of the script tag (around line 68)
+Add some dimension variables at the beginning of the script tag at [line 67](https://github.com/iobio/example-app/blob/master/step2/app.step2.html#L67)l
 ```JavaScript
 // Defaults
 var webservice = 'services.iobio.io/samtools',
