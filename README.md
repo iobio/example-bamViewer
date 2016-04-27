@@ -23,5 +23,5 @@ Each step below has a directory in this repo. If things go wrong somewhere along
 
 ### Step 5 - [Improve visualization](/step5)
 
-### Step 6 Test the streaming!
+### Step 6 - Test the streaming!
 One of the defining characteristics of iobio is it's streaming nature. The visualization library supports streaming data. To see this in action test a bigger region like this 20:4000000-4009000. This looks especially nice using the app.step4.html file, which has lots of colors.
