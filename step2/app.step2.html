@@ -106,12 +106,7 @@
   			var bamR = new readBinaryBAM(bai, bam);
 		  	bamR.bamFront(function(){
 		  		bamR.getAlns(chr, start, end, function(alnseq){
-		  			// getAlns just gets chunks of the bam
-		  			// So it requires an extra filter step to get a precise region
-		  			alns = alnseq.filter(function(d) {
-		  				return ( (d.head.pos >= start) && ((d.head.pos + d.head.seq.length) <= end) );
-		  			})
-		  			console.log(alns);
+		  			console.log(alnseq);
 		  		})
 		  	});
   		}
