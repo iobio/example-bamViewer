@@ -22,5 +22,3 @@ Each step below has a directory in this repo. If things go wrong somewhere along
 ### Step 4 - [Hook Up Data to Visualization](/step4)
 
 ### Step 5 - [Improve visualization](/step5)
-
-To learn more about the 
