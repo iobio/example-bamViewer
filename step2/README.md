@@ -46,3 +46,30 @@ function goUrl() {
     cmd.run();
 }
 ```
+
+### Get data from FILE
+Create a function that can grab a region of data from any url pointing to a BAM file
+```JavaScript
+function goFile(evt) {
+    // Figure out which is BAM and which is BAI
+    var bam = evt.files[0].name.slice(-3) == 'bam' ? evt.files[0] : evt.files[1];
+    var bai = evt.files[0].name.slice(-3) == 'bai' ? evt.files[0] : evt.files[1];
+
+    // Parse Region
+    var region = $('#region').val();
+    var chr = region.split(':')[0];
+    var start = +region.split(':')[1].split('-')[0];
+    var end = +region.split(':')[1].split('-')[1];
+    var alns;
+
+    // Show spinner
+    $('#spinner').css('display', 'inline');
+
+    var bamR = new readBinaryBAM(bai, bam);
+    bamR.bamFront(function(){
+        bamR.getAlns(chr, start, end, function(alnseq){
+            console.log(alnseq);
+        })
+    });
+}
+```
