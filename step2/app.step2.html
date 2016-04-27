@@ -16,6 +16,8 @@
 
 	<style type="text/css">
 		.container { margin-top: 100px; }
+
+		#spinner { display: none; margin-top: 60px; }
 	</style>
 </head>
 
@@ -28,7 +30,7 @@
 		<!-- inputs -->
 		<div  id="input">
 			<!-- region input -->
-			<div>Region: <input id='region' type='text' value="2:4000000-4001000" ></input></div>
+			<div>Region: <input id='region' type='text' value="20:4000000-4001000" ></input></div>
 
 			<!-- url input -->
 			<button class='btn btn-info' type="button" data-toggle="modal" data-target="#urlModal">Open Url</button>
@@ -39,6 +41,9 @@
 			    Open File
 			</label>
 		</div>
+
+		<!-- spinner -->
+		<img id='spinner' src="../assets/img/spinner.gif"></img>
 
 	</div>
 
@@ -54,6 +59,64 @@
             </div>
     	</div>
   	</div>
+
+
+  	<script type="text/javascript">
+  		// Defaults
+  		var webservice = 'services.iobio.io/samtools'
+
+  		function goUrl() {
+  			// Get inputs
+  			var url = $('#url').val();
+  			var region = $('#region').val() ;
+
+  			// Show spinner
+  			$('#spinner').css('display', 'inline');
+
+  			// Create iobio command
+  			var cmd = new iobio.cmd(webservice, [ 'view', url, region ])
+
+  			// Do stuff with results
+  			cmd.on('data', function(data) {
+  				console.log(data);
+  			})
+
+  			// Error handling
+  			cmd.on('error', function(err) { console.log('Error: ' + err);})
+
+  			// Run command
+  			cmd.run();
+  		}
+
+  		function goFile(evt) {
+  			// Figure out which is BAM and which is BAI
+			var bam = evt.files[0].name.slice(-3) == 'bam' ? evt.files[0] : evt.files[1];
+  			var bai = evt.files[0].name.slice(-3) == 'bai' ? evt.files[0] : evt.files[1];
+
+  			// Parse Region
+  			var region = $('#region').val();
+  			var chr = region.split(':')[0];
+  			var start = +region.split(':')[1].split('-')[0];
+  			var end = +region.split(':')[1].split('-')[1];
+  			var alns;
+
+  			// Show spinner
+  			$('#spinner').css('display', 'inline');
+
+  			var bamR = new readBinaryBAM(bai, bam);
+		  	bamR.bamFront(function(){
+		  		bamR.getAlns(chr, start, end, function(alnseq){
+		  			// getAlns just gets chunks of the bam
+		  			// So it requires an extra filter step to get a precise region
+		  			alns = alnseq.filter(function(d) {
+		  				return ( (d.head.pos >= start) && ((d.head.pos + d.head.seq.length) <= end) );
+		  			})
+		  			console.log(alns);
+		  		})
+		  	});
+  		}
+
+  	</script>
 
 
 </div>

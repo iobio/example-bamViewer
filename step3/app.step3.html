@@ -27,15 +27,15 @@
 		<!-- Title -->
 		<h1>BAM Viewer</h1>
 
-		<!-- inputs -->
+		<!-- Inputs -->
 		<div  id="input">
-			<!-- region input -->
+			<!-- Region input -->
 			<div>Region: <input id='region' type='text' value="20:4000000-4001000" ></input></div>
 
-			<!-- url input -->
+			<!-- URL input -->
 			<button class='btn btn-info' type="button" data-toggle="modal" data-target="#urlModal">Open Url</button>
 
-			<!-- file input -->
+			<!-- File input -->
 			<label class="btn btn-info" for="my-file-selector">
 			    <input id="my-file-selector" onchange="goFile(this)" type="file" style="display:none;" multiple>
 			    Open File
@@ -45,10 +45,13 @@
 		<!-- spinner -->
 		<img id='spinner' src="../assets/img/spinner.gif"></img>
 
+		<!-- Visualization -->
+		<div id='viz' style="width:100%"></div>
+
 	</div>
 
 
-	<!-- url modal -->
+	<!-- URL modal -->
 	<div class="modal fade" id="urlModal" tabindex="-1" role="dialog" aria-labelledby="urlModal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -63,7 +66,10 @@
 
   	<script type="text/javascript">
   		// Defaults
-  		var webservice = 'services.iobio.io/samtools'
+  		var webservice = 'services.iobio.io/samtools',
+  			margin = {top: 30, left: 30, right: 30, bottom: 30},
+  			width = 800,
+  			height = 500;
 
   		function goUrl() {
   			// Get inputs
@@ -103,6 +109,7 @@
   			// Show spinner
   			$('#spinner').css('display', 'inline');
 
+  			// Get alignments from BAM file
   			var bamR = new readBinaryBAM(bai, bam);
 		  	bamR.bamFront(function(){
 		  		bamR.getAlns(chr, start, end, function(alnseq){
@@ -115,6 +122,36 @@
 		  		})
 		  	});
   		}
+
+  		// Draw Alignment Visualization
+
+		// Temporary data for testing
+		alns = [{start:1, end:3, id:'1'}, {start:2, end:4, id:'2'}, {start:3, end:5, id:'3'},{start:4, end:6, id:'4'}];
+
+		// Hide spinner
+		$('#spinner').css('display', 'none');
+
+		// Create pileup layout to calculate position
+		var pileup = iobio.viz.layout.pileup().sort(null).size(width);
+
+			// Create alignment chart with attributes
+	    var chart = iobio.viz.alignment()
+			.width(width)
+			.height(height)
+			.margin(margin)
+			.yAxis(null)
+			.xValue(function(d) { return d.x; })
+			.yValue(function(d) { return d.y; })
+			.wValue(function(d) { return d.w; })
+			.id(function(d) { return 'read-' + d.data.id.replace('.', '_'); })
+			.tooltip(function(d) { return "id:  " + d.data.id + "<br/>" + "pos: " + d.data.start + ' - ' + d.data.end + "<br/>"
+			});
+
+		// Create selection with viz div and the alignment data
+	    var selection = d3.select('#viz').datum( pileup(alns) );
+
+	    // Draw chart
+	    chart(selection);
 
   	</script>
 

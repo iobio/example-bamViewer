@@ -159,7 +159,58 @@
 				.yValue(function(d) { return d.y; })
 				.wValue(function(d) { return d.w; })
 				.id(function(d) { return 'read-' + d.data.id.replace('.', '_'); })
-				.tooltip(function(d) { return "id:  " + d.data.id + "<br/>" + "pos: " + d.data.start + ' - ' + d.data.end + "<br/>"
+				.tooltip(function(d) { return "id:  " + d.data.id + "<br/>" + "pos: " + d.data.start + ' - ' + (d.data.end) + "<br/>"  + "seq: " + d.data.seqStr
+					+ "<br/> cigar: " + d.data.cigarStr;
+				})
+				.directionValue(function(d) { return d.data.flag.read_reverse_strand ? 'reverse' : 'forward' ; })
+				.color(function(d,i) {
+					// if (d.data.cigarStr.includes('X'))
+					// 	return 'blue';
+					// else if (d.data.cigarStr.includes('D'))
+					// 	return 'red';
+					// else
+					// 	return 'rgb(180,180,180)'; // #b4b4b4
+					var seqLength = d.data.seqStr.length,
+						linearGradient = 'linear-gradient(to right',
+						pos = 0,
+						stopColor;
+
+					if (d.data.id == "ERR194147.681909242") {
+						var h = 5;
+					}
+					var linearGradient = d3.select('#viz svg').append('linearGradient').attr('id', 'gradient-' + i);
+
+					if (d.data.md) {
+						d.data.md.split('MD:Z:')[1].split(/([0-9]+)/).forEach(function(c) {
+							if (c == '' ) { return } // Ignore empty and Tags
+							else if(isNaN(c)){ // Handle non numbers
+								if (c[0] == '^') { // Deletion
+									percent = pos + (c.length-1) / seqLength * 100;
+									stopColor = 'black';
+								} else { // Mismatch
+									percent = pos + (c.length) / seqLength * 100;
+									stopColor = 'red';
+								}
+
+							} else { // handle numbers
+								var percent = pos + parseInt(c) / seqLength * 100;
+								stopColor = '#b4b4b4';
+							}
+							linearGradient.append('stop')
+									.attr('offset', pos + '%')
+									.attr('stop-color', stopColor);
+
+							linearGradient.append('stop')
+								.attr('offset', percent + '%')
+								.attr('stop-color', stopColor);
+
+							pos = percent;
+						})
+						return 'url(#' + 'gradient-' + i;
+					} else {
+
+						return 'rgb(180,180,180)';
+					}
 				});
 
 			// Create selection with viz div and the alignment data
@@ -167,6 +218,28 @@
 
 		    // Draw chart
 		    chart(selection);
+
+		    d3.selection.prototype.moveToFront = function() {
+		      return this.each(function(){
+		        this.parentNode.parentNode.appendChild(this.parentNode);
+		      });
+		    };
+
+		    // Add mate pair expand on hover
+		    selection.selectAll('.alignment polygon')
+		    	.on('mouseover', function(d) {
+			        d3.selectAll('#' + this.getAttribute('id'))
+			        	.attr('transform', 'scale(3,3)')
+			        	.each(function(){ // forces hovered alignment to front
+							this.parentNode.parentNode.appendChild(this.parentNode);
+					    });
+			    })
+			    .on('mouseout', function(d) {
+			        d3.selectAll('#' + this.getAttribute('id')).attr('transform', 'scale(1,1)');
+			    })
+			    .style('stroke', 'white')
+			    .style('stroke-width', '1px')
+
 		}
 
 		function parseSamRecord(str) {
