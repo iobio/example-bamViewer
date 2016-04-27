@@ -1,5 +1,7 @@
 # Step 1
 
+In this step we'll create a rough UI that can take the inputs we need, but won't do anything yet.
+
 ### Setup
 First, clone the repo, and use the skeleton file to get a good starting point in a new directory
 
@@ -52,5 +54,3 @@ Use bootstrap to create a modal for the URL button.
     	</div>
   	</div>
 ```
-
-Now we have a rough UI that can take the input we need and has hooks ready to attach to. 
