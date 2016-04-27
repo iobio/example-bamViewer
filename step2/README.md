@@ -1,5 +1,5 @@
 # Step 2
-In this step we'll create the iobio commands to grab the data, but we won't do anthing with the data yet.
+In this step we'll create the iobio commands and grab the data, but we won't do anthing with the data yet.
 
 ### Add spinner
 Add a spinner so that we can see when the app is working
@@ -91,6 +91,9 @@ function goFile(evt) {
     });
 }
 ```
+
+### Run it
+To see it working, open the default URL and click go. After a few seconds open the javascript console and you should see a bunch of SAM alignments. If you see them, then you are successfully streaming data to the web app.
 
 ### Results
 [Step2 Live](http://iobio.github.io/example-bamViewer/step2/app.step2.html)
