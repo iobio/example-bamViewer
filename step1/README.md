@@ -6,8 +6,8 @@ In this step we'll create a rough UI that can take the inputs we need, but won't
 First, clone the repo, and use the skeleton file to get a good starting point in a new directory
 
 ```
-  git clone https://github.com/iobio/example-app.git
-  cd example-app/start
+  git clone https://github.com/iobio/example-bamViewer.git
+  cd example-bamViewer/start
   cp app.skeleton.html bamViewer.html
 ```
 
@@ -57,4 +57,4 @@ Use bootstrap to create a modal for the URL button.
 
 ### Results
 We should now see something like this
-![alt text](https://raw.githubusercontent.com/iobio/example-app/master/assets/img/step1.png)
+![alt text](https://raw.githubusercontent.com/iobio/example-bamViewer/master/assets/img/step1.png)

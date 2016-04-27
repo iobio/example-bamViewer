@@ -2,7 +2,7 @@
 So we have our basic viewer up and working. We can have a little fun and alter the chart to do some more use-case specific stuff.
 
 ### Add arrows to show strandedness
-Showing strandedness is built in to the alignment chart, so we can just add an extra attribute to our chart to get it to work. At [line 162](https://github.com/iobio/example-app/blob/master/step4/app.step4.html#L162) we can add the direction attribute and give some information on how to determine if an alignment is forward or reverse. I've included the whole chart below, but you only have to add the last line
+Showing strandedness is built in to the alignment chart, so we can just add an extra attribute to our chart to get it to work. At [line 162](https://github.com/iobio/example-bamViewer/blob/master/step4/app.step4.html#L162) we can add the direction attribute and give some information on how to determine if an alignment is forward or reverse. I've included the whole chart below, but you only have to add the last line
 ```JavaScript
 var chart = iobio.viz.alignment()
 	.width(width)
@@ -20,7 +20,7 @@ var chart = iobio.viz.alignment()
 ```
 
 ### Show mate pair
-Lets say we want to emphasize mate pairs in this visualization. Here we can add some custom d3 code that is not part of the chart to get a magnifying effect. Add this right below where you call the chart, below [line 167](https://github.com/iobio/example-app/blob/master/step4/app.step4.html#L167)
+Lets say we want to emphasize mate pairs in this visualization. Here we can add some custom d3 code that is not part of the chart to get a magnifying effect. Add this right below where you call the chart, below [line 167](https://github.com/iobio/example-bamViewer/blob/master/step4/app.step4.html#L167)
 ```JavaScript
 // Add mate pair expand on hover
 selection.selectAll('.alignment polygon') // select all alignments, which are polygons
@@ -89,4 +89,4 @@ Finally, lets see if we can show some finer sequence information. We could add a
 
 ### Results
 We should now see something like this
-![alt text](https://raw.githubusercontent.com/iobio/example-app/master/assets/img/step5.png)
+![alt text](https://raw.githubusercontent.com/iobio/example-bamViewer/master/assets/img/step5.png)

@@ -2,7 +2,7 @@
 In this step we'll create the visualization for our BAM viewer and visualize some test data
 
 ### Define dimensions of visualization
-Add some dimension variables at the beginning of the script tag at [line 67](https://github.com/iobio/example-app/blob/master/step2/app.step2.html#L67)
+Add some dimension variables at the beginning of the script tag at [line 67](https://github.com/iobio/example-bamViewer/blob/master/step2/app.step2.html#L67)
 ```JavaScript
 // Defaults
 var webservice = 'services.iobio.io/samtools',
@@ -12,7 +12,7 @@ var webservice = 'services.iobio.io/samtools',
 ```
 
 ### Add visualization at the end of the script tag
-We are going to add the visualization code at the end of the script tag. 
+We are going to add the visualization code at the end of the script tag.
 ```JavaScript
 // Draw Alignment Visualization
 function draw(alns)
@@ -55,4 +55,4 @@ Also a few things to note:
 
 ### Results
 We should now see something like this
-![alt text](https://raw.githubusercontent.com/iobio/example-app/master/assets/img/step3.png)
+![alt text](https://raw.githubusercontent.com/iobio/example-bamViewer/master/assets/img/step3.png)
