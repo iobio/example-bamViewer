@@ -12,14 +12,14 @@ var webservice = 'services.iobio.io/samtools',
 ```
 
 ### Add visualization at the end of the script tag
-We are going to add the visualization code at the end of the script tag.
+We are going to use the alignment visualization from the iobio.viz library. This visualization can take a pileup and has some specific alignment features.
 ```JavaScript
 // Draw Alignment Visualization
 function draw(alns)
 	// Hide spinner
 	$('#spinner').css('display', 'none');
 
-	// Create pileup layout to calculate position (based on width)
+	// Create pileup layout which will calculate position(x,y) of each alignment passed through it
 	var pileup = iobio.viz.layout.pileup().sort(null).size(width);
 
 	// Create alignment chart with attributes
