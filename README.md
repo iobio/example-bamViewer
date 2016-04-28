@@ -1,6 +1,6 @@
 # IOBIO Example App
 
-This is a tutorial to build a very simple web app with iobio. It will include
+This is a tutorial to build a very simple web app with iobio. If you want to see the finished product you [click here](http://iobio.github.io/example-bamViewer/step5/app.step5.html). This tutorial will include
  * Grabbing some genomic data using websockets
  * Visualizing the data
  * Customizing the Visualization
@@ -25,3 +25,6 @@ Each step below has a directory in this repo. If things go wrong somewhere along
 
 ### Step 6 - Test the streaming!
 One of the defining characteristics of iobio is its streaming nature. The visualization we've created (and all iobio.viz visualizations) can handle streaming data by default. To see this in action test a bigger region like this 20:4000000-4009000. This looks especially nice using the app.step4.html file, which has lots of colors.
+
+Screenshot
+![alt text](https://raw.githubusercontent.com/iobio/example-bamViewer/master/assets/img/step5.png)
