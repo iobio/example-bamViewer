@@ -1,7 +1,7 @@
 # Step 5
-So we have our basic viewer up and working. We can have a little fun and alter the chart to do some more use-case specific stuff.
+So we have our basic viewer up and working. We can now have a little fun and alter the chart to do some more use-case specific stuff. In this case we'll be showing strandedness, mate pairs, mismatches, and deletions. Some features are built in to the visualizatin and some are just added on top, using some custom d3 code. 
 
-### Add arrows to show strandedness
+### Use arrows to show strandedness
 Showing strandedness is built in to the alignment chart, so we can just add an extra attribute to our chart to get it to work. At [line 161](https://github.com/iobio/example-bamViewer/blob/master/step4/app.step4.html#L161) we can add the direction attribute and give some information on how to determine if an alignment is forward or reverse. I've included the whole chart below, but you only have to add the last line
 ```JavaScript
 var chart = iobio.viz.alignment()
@@ -39,7 +39,7 @@ selection.selectAll('.alignment polygon') // select all alignments, which are po
 ```
 
 ### Show mismatches and deletions
-Finally, lets see if we can show some finer sequence information. We could add an element for each nucleotide, but that would increase our number of DOM objects by around 100X for the default URL BAM sample and even more for other samples. So instead we can be a little clever with color gradients to get the same effect. Here we'll use a color gradient to show mismatches as red and deletions as black. So we'll use the .color chart helper attribute to set the fill color for the alignment polygons. I've only included the last line of the chart for context. So add this new color attribute right below the directionValue attribute we added above.
+Finally, lets see if we can show some finer sequence information. We could add an element for each nucleotide, but that would increase our number of DOM objects by around 100X for the default URL BAM sample and even more for other samples. So instead we can be a little clever with color gradients to get the same effect. Here we'll use a color gradient to show mismatches as red and deletions as black. So we'll use the .color chart helper attribute to set the fill color for the alignment polygons. I've only included the last line of the chart for context. So add this new color attribute at [line 163](https://github.com/iobio/example-bamViewer/blob/master/step4/app.step4.html#L163  right below the directionValue attribute we added above.
 ```JavaScript
 // snipped off rest of the chart definition above
 .directionValue(function(d) { return d.data.flag.read_reverse_strand ? 'reverse' : 'forward' ; }) // previously added
@@ -81,7 +81,6 @@ Finally, lets see if we can show some finer sequence information. We could add a
 		})
 		return 'url(#' + 'gradient-' + i;
 	} else {
-
 		return 'rgb(180,180,180)';
 	}
 });
