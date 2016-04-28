@@ -1,10 +1,8 @@
 # Step 2
-In this step we'll create the iobio commands and grab the data, but we won't do anthing with the data yet.
+In this step we'll create the iobio commands and grab the data. In later steps will hook this data up to a visualization.
 
 ### Add spinner
-Add a spinner so that we can see when the app is working
-
-Inside he container div at the end add a spinner
+Add a spinner so that we can see when the app is doing work. Add it inside the container div at the end
 ```html
 <!-- spinner -->
 <img id='spinner' src="../assets/img/spinner.gif"></img>
