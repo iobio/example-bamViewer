@@ -3,7 +3,7 @@
 In this step we'll create a rough UI that can take the inputs we need, but won't do anything yet.
 
 ### Setup
-First, clone the repo, and use the skeleton file to get a good starting point in a new directory
+First, clone the repo, and create the file you'll be working with by copying app.skeleton.html. This will give you a bare html page with the necessary libraries added.
 
 ```
   git clone https://github.com/iobio/example-bamViewer.git
