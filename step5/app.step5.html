@@ -212,19 +212,20 @@
 		    chart(selection);
 
 		    // Add mate pair expand on hover
-		    selection.selectAll('.alignment polygon')
+		    selection.selectAll('.alignment') // alignment is g tag that contains a polygon tag
 		    	.on('mouseover', function(d) {
-			        d3.selectAll('#' + this.getAttribute('id'))
+			        d3.selectAll('#' + this.id).select('polygon') // Magnify the polygon
 			        	.attr('transform', 'scale(3,3)')
 			        	.each(function(){ // forces hovered alignment to front
 							this.parentNode.parentNode.appendChild(this.parentNode);
 					    });
 			    })
 			    .on('mouseout', function(d) {
-			        d3.selectAll('#' + this.getAttribute('id')).attr('transform', 'scale(1,1)');
+			        d3.selectAll('#' + this.id).select('polygon').attr('transform', 'scale(1,1)');
 			    })
-			    .style('stroke', 'white')
-			    .style('stroke-width', '1px')
+			    .select('polygon') // Add stroke to actual polygons
+				    .style('stroke', 'white')
+				    .style('stroke-width', '1px')
 
 		}
 

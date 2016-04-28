@@ -1,5 +1,5 @@
 # Step 5
-So we have our basic viewer up and working. We can now have a little fun and alter the chart to do some more use-case specific stuff. In this case we'll be showing strandedness, mate pairs, mismatches, and deletions. Some features are built in to the visualizatin and some are just added on top, using some custom d3 code. 
+So we have our basic viewer up and working. We can now have a little fun and alter the chart to do some more use-case specific stuff. In this case we'll be showing strandedness, mate pairs, mismatches, and deletions. Some features are built in to the visualizatin and some are just added on top, using some custom d3 code.
 
 ### Use arrows to show strandedness
 Showing strandedness is built in to the alignment chart, so we can just add an extra attribute to our chart to get it to work. At [line 161](https://github.com/iobio/example-bamViewer/blob/master/step4/app.step4.html#L161) we can add the direction attribute and give some information on how to determine if an alignment is forward or reverse. I've included the whole chart below, but you only have to add the last line
@@ -22,20 +22,20 @@ var chart = iobio.viz.alignment()
 ### Show mate pair
 Lets say we want to emphasize mate pairs in this visualization. Here we can add some custom d3 code that is not part of the chart to get a magnifying effect. Add this right below where you call the chart, below [line 168](https://github.com/iobio/example-bamViewer/blob/master/step4/app.step4.html#L168)
 ```JavaScript
-// Add mate pair expand on hover
-selection.selectAll('.alignment polygon') // select all alignments, which are polygons
+selection.selectAll('.alignment') // alignment is g tag that contains a polygon tag
 	.on('mouseover', function(d) {
-        d3.selectAll('#' + this.getAttribute('id'))
-        	.attr('transform', 'scale(3,3)') // magnify
+        d3.selectAll('#' + this.id).select('polygon') // Magnify the polygon
+        	.attr('transform', 'scale(3,3)')
         	.each(function(){ // forces hovered alignment to front
 				this.parentNode.parentNode.appendChild(this.parentNode);
 		    });
     })
     .on('mouseout', function(d) {
-        d3.selectAll('#' + this.getAttribute('id')).attr('transform', 'scale(1,1)'); // demagnify
+        d3.selectAll('#' + this.id).select('polygon').attr('transform', 'scale(1,1)');
     })
-    .style('stroke', 'white') // add a white border to make it easier to see
-    .style('stroke-width', '1px')
+    .select('polygon') // Add stroke to actual polygons
+	    .style('stroke', 'white')
+	    .style('stroke-width', '1px')
 ```
 
 ### Show mismatches and deletions
