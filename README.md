@@ -3,9 +3,9 @@
 ![alt text](https://raw.githubusercontent.com/iobio/example-bamViewer/master/assets/img/step5.png)
 
 This is a tutorial to build a very simple web app with iobio. If you want to skip to the end and see the finished product [click here](http://iobio.github.io/example-bamViewer/step5/app.step5.html). This tutorial will include
- * Grabbing some genomic data using websockets
- * Visualizing the data
- * Customizing the Visualization
+ * Grabbing some genomic data using iobio.js and websockets
+ * Visualizing the data using iobio.viz
+ * Customizing the visualization using iobio.viz and d3
 
 We will be making use of a few iobio libraries including:
  * [```iobio.js```](https://github.com/iobio/iobio.js) - create commands and handle websocket creation and returning data
