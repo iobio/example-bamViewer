@@ -1,6 +1,6 @@
 # IOBIO Example App
 
-This is a tutorial to build a very simple web app with iobio. If you want to see the finished product you [click here](http://iobio.github.io/example-bamViewer/step5/app.step5.html). This tutorial will include
+This is a tutorial to build a very simple web app with iobio. If you want to skip to the end and see the finished product [click here](http://iobio.github.io/example-bamViewer/step5/app.step5.html). This tutorial will include
  * Grabbing some genomic data using websockets
  * Visualizing the data
  * Customizing the Visualization
