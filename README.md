@@ -1,6 +1,6 @@
 # IOBIO Example App
 
-![alt text](https://raw.githubusercontent.com/iobio/example-bamViewer/master/assets/img/step5.png)
+[![alt text](https://raw.githubusercontent.com/iobio/example-bamViewer/master/assets/img/step5.png)](http://iobio.github.io/example-bamViewer/step5/app.step5.html)
 
 This is a tutorial to build a very simple web app with iobio. If you want to skip to the end and see the finished product [click here](http://iobio.github.io/example-bamViewer/step5/app.step5.html). This tutorial will include
  * Grabbing some genomic data using iobio.js and websockets
