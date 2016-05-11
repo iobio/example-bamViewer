@@ -1,6 +1,13 @@
 # Step 3
 In this step we'll create the visualization for our BAM viewer and visualize some test data
 
+### Add div to hold visualization
+At [line 47](https://github.com/iobio/example-bamViewer/blob/master/step2/app.step2.html#L47) add a div that we will later render the visualization into
+```JavaScript
+<!-- Visualization -->
+<div id='viz' style="width:100%"></div>
+```
+
 ### Define dimensions of visualization
 Add some dimension variables at the beginning of the script tag at [line 67](https://github.com/iobio/example-bamViewer/blob/master/step2/app.step2.html#L67)
 ```JavaScript
