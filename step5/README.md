@@ -2,7 +2,7 @@
 So we have our basic viewer up and working. We can now have a little fun and alter the chart to do some more use-case specific stuff. In this case we'll be showing strandedness, mate pairs, mismatches, and deletions. Some features are built in to the visualizatin and some are just added on top, using some custom d3 code.
 
 ### Use arrows to show strandedness
-Showing strandedness is built in to the alignment chart, so we can just add an extra attribute to our chart to get it to work. At [line 161](https://github.com/iobio/example-bamViewer/blob/master/step4/app.step4.html#L161) we can add the direction attribute and give some information on how to determine if an alignment is forward or reverse. I've included the whole chart below, but you only have to add the last line
+Showing strandedness is built in to the alignment chart, so we can just add an extra attribute to our chart to get it to work. At [line 161](https://github.com/iobio/example-bamViewer/blob/master/step4/app.step4.html#L161) we can add the direction attribute and give some information on how to determine if an alignment is forward or reverse. I've included the whole chart below, but you only have to add the last line. Also make sure to remove the semicolon from the .tooltip line below, since we are adding to our chained functions.
 ```JavaScript
 var chart = iobio.viz.alignment()
 	.width(width)
