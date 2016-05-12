@@ -50,14 +50,19 @@ function unpackFlag(flagValue) {
 }
 ```
 
+### Remove temporary viz code
+Remove the code in step 3 that we added to test the visualization. [Lines 148 - 150](https://github.com/iobio/example-bamViewer/blob/master/step3/app.step3.html#L148).
+
 ### Hook up URL data to visualization
-At [line 89](https://github.com/iobio/example-bamViewer/blob/master/step3/app.step3.html#L85) replace the ```data``` event callback with this code. The data event gets each time a message is delivered over the websocket. These messages aren't guaranteed to be a single record or even whole records, so we need to account for partial records.
+At [line 89](https://github.com/iobio/example-bamViewer/blob/master/step3/app.step3.html#L85) add a the variable ```alns``` to hold the alignments coming back. Also replace the ```data``` event callback with this code. The data event gets called each time a message is delivered over the websocket. These messages aren't guaranteed to be a single record or even whole records, so we need to account for partial records.
 ```JavaScript
+// Store alns as the come back
+var alns = [];
 // Do stuff with results
 var partialRecord = '';
 cmd.on('data', function(msg) {
     var recs = (partialRecord + msg).split("\n");
-	// Keep track of records that have been cut off at the end of the message
+    // Keep track of records that have been cut off at the end of the message
     partialRecord = recs[recs.length-1].slice(-1) == "\n" ? '' : recs.pop()
 	recs.forEach(function(recStr) {
         alns.push( parseSamRecord(recStr) );
