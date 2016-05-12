@@ -32,7 +32,7 @@ We'll be using samtools to grab regions of a bam. So we'll use the standard samt
 ```html
 <script>
     // Defaults
-  	var webservice = 'services.iobio.io/samtools'
+  	var webservice = 'services.iobio.io/samtools/'
 </script>
 ```
 

@@ -15,7 +15,7 @@ var webservice = 'services.iobio.io/samtools',
 We are going to use the alignment visualization from the iobio.viz library. This visualization can take a pileup and has some specific alignment features.
 ```JavaScript
 // Draw Alignment Visualization
-function draw(alns)
+function draw(alns) {
 	// Hide spinner
 	$('#spinner').css('display', 'none');
 
