@@ -1,6 +1,6 @@
 # Step 1
 
-In this step we'll create a rough UI that can take the inputs we need. In later steps, we will hook up this UI to functions that do work.
+In this step we'll create a rough UI that can take the inputs we need. In later steps, we will hook up this UI to functions that do work. For this step and all others will be working the ```working``` directory
 ### Setup
 First, clone the repo, and create the file you'll be working with by copying app.skeleton.html. This will give you a bare html page with all the necessary libraries added. From here on out you'll be building the app in the bamViewer.html file.
 
