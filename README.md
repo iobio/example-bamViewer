@@ -13,7 +13,7 @@ We will be making use of a few iobio libraries including:
 
 To learn more about these libraries go to there home pages linked above.
 
-Each step below has a directory in this repo. If things go wrong somewhere along the way you can simply copy the example file (e.g. app.step2.html) in the step directory you are currently at.
+For all steps you'll be working in the ```working directory```. But each step below has a directory in this repo, so if things go wrong somewhere along the way you can simply copy the example file (e.g. app.step2.html) to get back on track.
 
 ### Step 1 - [Create UI For Data Selection](/step1)
 
