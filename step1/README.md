@@ -6,7 +6,7 @@ First, clone the repo, and create the file you'll be working with by copying app
 
 ```
   git clone https://github.com/iobio/example-bamViewer.git
-  cd example-bamViewer/start
+  cd example-bamViewer/working
   cp app.skeleton.html bamViewer.html
 ```
 
