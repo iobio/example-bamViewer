@@ -1,6 +1,6 @@
 # Step 1
 
-In this step we'll create a rough UI that can take the inputs we need. In later steps will hook up this UI to functions that do work.
+In this step we'll create a rough UI that can take the inputs we need. In later steps, we will hook up this UI to functions that do work.
 ### Setup
 First, clone the repo, and create the file you'll be working with by copying app.skeleton.html. This will give you a bare html page with all the necessary libraries added. From here on out you'll be building the app in the bamViewer.html file.
 
@@ -11,7 +11,7 @@ First, clone the repo, and create the file you'll be working with by copying app
 ```
 
 ### Add Buttons
-Add input buttons for user to select a region and data (either via a file or an URL)
+Add input buttons for user to select a region and data (either via a file or a URL).
 
 ``` html
   <div class='container text-center'>
