@@ -1,14 +1,14 @@
 # Step 2
-In this step we'll create the iobio commands and grab the data. In later steps will hook this data up to a visualization.
+In this step we'll create the iobio commands and grab the data. In later steps, we will hook this data up to a visualization.
 
 ### Add spinner
-Add a spinner so that we can see when the app is doing work. Add it inside the container div at the end
+Add a spinner so that we can see when the app is doing work. Add it inside the container div at the end of the html file.
 ```html
 <!-- spinner -->
 <img id='spinner' src="../assets/img/spinner.gif"></img>
 ```
 
-In the style tag at [line 19](https://github.com/iobio/example-bamViewer/blob/master/step1/app.step1.html#L19), add some style to the spinner
+In the style tag at [line 19](https://github.com/iobio/example-bamViewer/blob/master/step1/app.step1.html#L19), add some style to the spinner.
 ```html
 <style type="text/css">
 	.container { margin-top: 100px; }
@@ -18,7 +18,7 @@ In the style tag at [line 19](https://github.com/iobio/example-bamViewer/blob/ma
 ```
 
 ### Create script element
-Inside the body tag but at the very end add a script tag. All of your JavaScript will go in here.
+Inside the body tag but at the very end of the html file, add a script tag. All of your JavaScript will go in here.
 
 ```html
 <script>
@@ -37,7 +37,7 @@ We'll be using samtools to grab regions of a bam. So we'll use the standard samt
 ```
 
 ### Get data from URL
-Create a function that can grab a region of data from any url pointing to a BAM file
+Create a function that can grab a region of data from any url pointing to a BAM file.
 ```JavaScript
 function goUrl() {
     // Get inputs
@@ -64,7 +64,7 @@ function goUrl() {
 ```
 
 ### Get data from FILE
-Create a function that can grab a region of data from any url pointing to a BAM file
+Create a function that can grab a region of data from any url pointing to a BAM file.
 ```JavaScript
 function goFile(evt) {
     // Figure out which is BAM and which is BAI
