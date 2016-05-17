@@ -1,15 +1,15 @@
 # Step 3
-In this step we'll create the visualization for our BAM viewer and visualize some test data
+In this step we'll create the visualization for our BAM viewer and visualize some test data.
 
 ### Add div to hold visualization
-At [line 47](https://github.com/iobio/example-bamViewer/blob/master/step2/app.step2.html#L47) add a div that we will later render the visualization into
+At [line 47](https://github.com/iobio/example-bamViewer/blob/master/step2/app.step2.html#L47), add a div that we will later render the visualization into.
 ```JavaScript
 <!-- Visualization -->
 <div id='viz' style="width:100%"></div>
 ```
 
 ### Define dimensions of visualization
-Add some dimension variables at the beginning of the script tag at [line 67](https://github.com/iobio/example-bamViewer/blob/master/step2/app.step2.html#L67)
+Add some dimension variables at the beginning of the script tag at [line 67](https://github.com/iobio/example-bamViewer/blob/master/step2/app.step2.html#L67).
 ```JavaScript
 // Defaults
 var webservice = 'services.iobio.io/samtools',
@@ -54,11 +54,11 @@ alns = [{start:1, end:3, id:'1'}, {start:2, end:4, id:'2'}, {start:3, end:5, id:
 draw(alns);
 ```
 
-So it doesn't look like much now, but that will change when we hook up the real data, which we'll be doing in the next step
+So it doesn't look like much now, but that will change when we hook up the real data, which we'll be doing in the next step.
 
 Also a few things to note:
 * The pileup layout here does the heavy lifting for determining an efficient pileup. After the alignments are run through the pileup layout each alignment has an x and y coordinate. This keeps the chart simple and allows it to simply place each alignment based on these coordinates.
-* The pileup returns data in the format of ```{ x:xpos, y:ypos, data:{} )``` where the original data is now stored in data. This is done so that nothing in your original data is overwritten. This is why the id accessor function grabs the id by doing ```d.data.id```
+* The pileup returns data in the format of ```{ x:xpos, y:ypos, data:{} )``` where the original data is now stored in data. This is done so that nothing in your original data is overwritten. This is why the id accessor function grabs the id by doing ```d.data.id```.
 
 ### Results
 [Step3 Live](http://iobio.github.io/example-bamViewer/step3/app.step3.html)
