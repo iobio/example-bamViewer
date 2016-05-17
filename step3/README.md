@@ -12,7 +12,7 @@ At [line 47](https://github.com/iobio/example-bamViewer/blob/master/step2/app.st
 Add some dimension variables at the beginning of the script tag at [line 67](https://github.com/iobio/example-bamViewer/blob/master/step2/app.step2.html#L67).
 ```JavaScript
 // Defaults
-var webservice = 'services.iobio.io/samtools',
+var webservice = 'services.iobio.io/samtools/a',
     margin = {top: 30, left: 30, right: 30, bottom: 30},
     width = 800,
     height = 500;
