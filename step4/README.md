@@ -1,8 +1,8 @@
 # Step 4
-Now we can finally hook up the real data to our visualization code and see our bam viewer
+Now we can finally hook up the real data to our visualization code and see our bam viewer.
 
 ### Add SAM/BAM helper parser functions
-First we need to add some helper functions to parse the SAM/BAM records coming back. Add these at the end of the ```script``` tag
+First we need to add some helper functions to parse the SAM/BAM records coming back. Add these at the end of the ```script``` tag.
 ```JavaScript
 function parseSamRecord(str) {
     var rec = {},
@@ -54,7 +54,7 @@ function unpackFlag(flagValue) {
 Remove the code in step 3 that we added to test the visualization. [Lines 148 - 150](https://github.com/iobio/example-bamViewer/blob/master/step3/app.step3.html#L148).
 
 ### Hook up URL data to visualization
-At [line 89](https://github.com/iobio/example-bamViewer/blob/master/step3/app.step3.html#L85) add a the variable ```alns``` to hold the alignments coming back. Also replace the ```data``` event callback with this code. The data event gets called each time a message is delivered over the websocket. These messages aren't guaranteed to be a single record or even whole records, so we need to account for partial records.
+At [line 89](https://github.com/iobio/example-bamViewer/blob/master/step3/app.step3.html#L85) add the variable ```alns``` to hold the alignments coming back. Also replace the ```data``` event callback with this code. The data event gets called each time a message is delivered over the websocket. These messages aren't guaranteed to be a single record or even whole records, so we need to account for partial records.
 ```JavaScript
 // Store alns as the come back
 var alns = [];
